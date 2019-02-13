@@ -1,5 +1,5 @@
 # About
-Highlights unread comments on the [Grrl Power comic site](grrlpowercomic.com), based on a stored timestamp of the last site visit.
+Highlights unread comments on the [Grrl Power comic site](https://grrlpowercomic.com), based on a stored timestamp of the last site visit.
 
 A "comments read" bookmark is saved by setting a cookie with the current timestamp - you will need cookies enabled, but it is not a 3rd-party cookie so most configurations should work out of the box. The script imports the popular _moment.js_ library for date parsing, but otherwise does not communicate with any other site or service.
 
