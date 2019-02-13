@@ -1,4 +1,4 @@
-(function(){function loadMoment(){var fileref=document.createElement('script');fileref.onload=loadComments;fileref.setAttribute("type","text/javascript");fileref.setAttribute("src","https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js");if(typeof fileref!=="undefined")
+javascript:(function(){function loadMoment(){var fileref=document.createElement('script');fileref.onload=loadComments;fileref.setAttribute("type","text/javascript");fileref.setAttribute("src","https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js");if(typeof fileref!=="undefined")
 document.getElementsByTagName("head")[0].appendChild(fileref)}
 function loadComments(){let timestamps=document.getElementsByClassName('comment-time');var lastRead=getCookieTime();for(i=0;i<timestamps.length;i++){let stamp=timestamps.item(i);evalComment(stamp,lastRead)}}
 function getCookieTime(){let cookieKey="lastread";var cookieTime=getCookie(cookieKey);cookieTime=cookieTime?new Date(cookieTime):moment().add(-1,'d');setCookie(cookieKey);return cookieTime}
