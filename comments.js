@@ -1,5 +1,5 @@
 (function(){
-    let node = (tag)=> document.createElement(tag);//reduce wordiness
+    var node = (tag)=> document.createElement(tag);//reduce wordiness
     
     // load moment.js and trigger a callback when ready
     function loadMoment(){  //https://stackoverflow.com/a/16743863/957950
@@ -13,26 +13,26 @@
 
     function createUI(){
         //create new elements
-        let label = node('label'),
+        var label = node('label'),
             saveBtn = node('a');
         saveBtn.innerText = 'Save';
         saveBtn.style.marginRight = '4em';
         saveBtn.style.marginLeft = '1em';
         saveBtn.onclick = () => { setCookie(label) };
         
-        let count=node('label');
+        var count=node('label');
         count.style.marginRight = '1em';
 
-        let prevBtn = node('a');
+        var prevBtn = node('a');
         prevBtn.innerText = "Prev ▲"
         prevBtn.onclick = prev;
 
-        let nextBtn = node('a');
+        var nextBtn = node('a');
         nextBtn.innerText = "▼ Next"
         nextBtn.onclick = next;
         
         // update the nav styling
-        let nav = document.getElementsByClassName("navigation")[0];
+        var nav = document.getElementsByClassName("navigation")[0];
         nav.className += " comment";    //reuse existing styling
         Object.assign(nav.style, {
             position:'fixed', top: 0,
@@ -42,7 +42,7 @@
         });
 
         // append new UI to nav
-        let ol = nav.firstElementChild,
+        var ol = nav.firstElementChild,
             li = node('li');
         li.style.float='right';
         li.append(label);
@@ -58,15 +58,15 @@
     }
 
     // find all comment nodes by timestamp class and process them
-    let unread=[];
+    var unread=[];
     function loadComments(label, count) {
-        let timestamps = document.getElementsByClassName('comment-time');
+        var timestamps = document.getElementsByClassName('comment-time');
         
         var lastRead = getCookieTime();
         label.innerText = lastRead.fromNow();
         //for (i=0; i < timestamps.length; i++) {
         for (i=0; i < timestamps.length; i++) { //temp for developing
-            let stamp = timestamps.item(i),
+            var stamp = timestamps.item(i),
                 comment = evalComment(stamp, lastRead);
             if (!!comment)
                 unread.push(comment);
@@ -76,7 +76,7 @@
     } 
 
     // load a 'last read' cookie as a timestamp cutoff, set new value for next load
-    let cookieKey = "lastread";
+    var cookieKey = "lastread";
     function getCookieTime(){
         var cookieTime = getCookie(cookieKey);
         cookieTime = cookieTime ? moment(cookieTime) : moment().add(-1,'d');
@@ -99,7 +99,7 @@
 
     // see if a given comment timestamp is new enough to be 'unread'
     function evalComment(stamp, lastReadTime){    //http://momentjs.com/docs/#/parsing/string-format/
-        let stampDateTime = moment(stamp.title,"LLLL");
+        var stampDateTime = moment(stamp.title,"LLLL");
         
         return (stampDateTime._d > lastReadTime) ? formatComment(stamp) : false;
     }
@@ -111,7 +111,7 @@
     }
 
     // track location
-    let curr=0;
+    var curr=0;
     function next(){
         clear();
         curr = Math.min(curr+1, unread.length-1);
@@ -126,10 +126,11 @@
         unread[curr].style.outline = '';
     }
     function scroll(index){
-        let el = unread[index];
-        //debugger;
-        el.scrollIntoViewIfNeeded();
-        unread[curr].style.outline = '3px solid orange';
+        var el = unread[index];
+        if (el) {
+            el.scrollIntoViewIfNeeded();
+            unread[curr].style.outline = '3px solid orange';
+        }
     }
 
     loadMoment();  //trigger the process
