@@ -128,7 +128,7 @@
     function scroll(index){
         var el = unread[index];
         if (el) {
-            el.scrollIntoViewIfNeeded();
+            el.scrollIntoView({behavior:'smooth',block:'center'})
             unread[curr].style.outline = '3px solid orange';
         }
     }
