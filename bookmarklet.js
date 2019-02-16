@@ -1,0 +1,1 @@
+javascript:(function(){var ref=document.createElement('script');ref.type="text/javascript";ref.src="https://cdn.jsdelivr.net/gh/brianrichins/grrlpower-comments@master/comments.min.js";document.getElementsByTagName("head")[0].appendChild(ref)})()
