@@ -1,5 +1,7 @@
 (function(){
-    var node = (tag)=> document.createElement(tag);//reduce wordiness
+    function node (tag){
+        document.createElement(tag);//reduce wordiness  
+    }
     
     // load moment.js and trigger a callback when ready
     function loadMoment(){  //https://stackoverflow.com/a/16743863/957950
@@ -18,7 +20,7 @@
         saveBtn.innerText = 'Save';
         saveBtn.style.marginRight = '4em';
         saveBtn.style.marginLeft = '1em';
-        saveBtn.onclick = () => { setCookie(label) };
+        saveBtn.onclick = function() { setCookie(label) };
         
         var count=node('label');
         count.style.marginRight = '1em';
