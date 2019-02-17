@@ -1,11 +1,7 @@
-(function(){
-    function node (tag){
-        document.createElement(tag);//reduce wordiness  
-    }
-    
+(function(){    
     // load moment.js and trigger a callback when ready
     function loadMoment(){  //https://stackoverflow.com/a/16743863/957950
-        var fileref = node('script');
+        var fileref = document.createElement('script');
         fileref.onload = createUI;  //set callback
         fileref.setAttribute("type","text/javascript");
         fileref.setAttribute("src", "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js");
@@ -15,45 +11,45 @@
 
     function createUI(){
         //create new elements
-        var label = node('label'),
-            saveBtn = node('a');
+        var label = document.createElement('label'),
+            saveBtn = document.createElement('a');
         saveBtn.innerText = 'Save';
         saveBtn.style.marginRight = '4em';
         saveBtn.style.marginLeft = '1em';
         saveBtn.onclick = function() { setCookie(label) };
         
-        var count=node('label');
+        var count=document.createElement('label');
         count.style.marginRight = '1em';
 
-        var prevBtn = node('a');
+        var prevBtn = document.createElement('a');
         prevBtn.innerText = "Prev ▲"
         prevBtn.onclick = prev;
 
-        var nextBtn = node('a');
+        var nextBtn = document.createElement('a');
         nextBtn.innerText = "▼ Next"
         nextBtn.onclick = next;
         
         // update the nav styling
         var nav = document.getElementsByClassName("navigation")[0];
         nav.className += " comment";    //reuse existing styling
-        Object.assign(nav.style, {
-            position:'fixed', top: 0,
-            width: '612px',
-            marginLeft: '-5px', marginTop:'0',
-            border: '2px solid'
-        });
+        nav.style.position ='fixed'; 
+        nav.style.top = 0;
+        nav.style.width = '612px';
+        nav.style.marginLeft = '-5px'; 
+        nav.style.marginTop ='0';
+        nav.style.border = '2px solid';
 
         // append new UI to nav
         var ol = nav.firstElementChild,
-            li = node('li');
+            li = document.createElement('li');
         li.style.float='right';
-        li.append(label);
-        li.append(saveBtn);
-        li.append(count);
-        li.append(prevBtn);
-        li.append(nextBtn);
+        li.appendChild(label);
+        li.appendChild(saveBtn);
+        li.appendChild(count);
+        li.appendChild(prevBtn);
+        li.appendChild(nextBtn);
         
-        ol.append(li);
+        ol.appendChild(li);
         
         // trigger workflow
         loadComments(label, count);
@@ -94,7 +90,7 @@
         label.innerText = currTime.fromNow();
         var expDate = currTime.add(30,'d'); //keep for a month
         // set an expiration to persist after browser closes
-        var cookie_string = `${cookieKey}=${val}; path=/; expires=${expDate._d.toUTCString()}`;
+        var cookie_string = cookieKey+'='+val+'; path=/; expires='+expDate._d.toUTCString();
         // Create or update the cookie:
         document.cookie = cookie_string;
     }
