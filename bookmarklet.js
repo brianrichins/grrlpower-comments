@@ -1,1 +1,1 @@
-(function(){var ref=document.createElement('script');ref.type="text/javascript";ref.src="https://cdn.staticaly.com/gh/brianrichins/grrlpower-comments/master/script.min.js";document.getElementsByTagName("head")[0].appendChild(ref)})()
+javascript:(function(){var ref=document.createElement('script');ref.type="text/javascript";ref.src="https://cdn.staticaly.com/gh/brianrichins/grrlpower-comments/master/script.min.js";document.getElementsByTagName("head")[0].appendChild(ref)})()
