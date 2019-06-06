@@ -1,7 +1,13 @@
 (function(){    
     // load moment.js and trigger a callback when ready
     function loadMoment(){  //https://stackoverflow.com/a/16743863/957950
+        var existId = 'grrlCommentsLoaded';
+        var existingScript = document.getElementById(existId);
+        if (!!existingScript)   //quit if already run
+            return;
+
         var fileref = document.createElement('script');
+        fileref.id = existId;
         fileref.onload = createUI;  //set callback
         fileref.setAttribute("type","text/javascript");
         fileref.setAttribute("src", "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js");
@@ -10,49 +16,62 @@
     }   
 
     function createUI(){
-        //create new elements
-        var label = document.createElement('label'),
-            saveBtn = document.createElement('a');
-        saveBtn.innerText = 'Save';
-        saveBtn.style.marginRight = '4em';
-        saveBtn.style.marginLeft = '1em';
-        saveBtn.onclick = function() { setCookie(label) };
-        
-        var count=document.createElement('label');
-        count.style.marginRight = '1em';
-
-        var prevBtn = document.createElement('a');
-        prevBtn.innerText = "Prev ▲"
-        prevBtn.onclick = prev;
-
-        var nextBtn = document.createElement('a');
-        nextBtn.innerText = "▼ Next"
-        nextBtn.onclick = next;
-        
         // update the nav styling
-        var nav = document.getElementsByClassName("navigation")[0];
+        var nav = document.getElementById("paginav") || createNav();
+        nav.attributes.grrlCommentsLoaded = true;
         nav.className += " comment";    //reuse existing styling
         nav.style.position ='fixed'; 
         nav.style.top = 0;
-        nav.style.width = '612px';
-        nav.style.marginLeft = '-5px'; 
+        nav.style.width = '752px';
+        nav.style.marginLeft = '-10px'; 
         nav.style.marginTop ='0';
         nav.style.border = '2px solid';
 
-        // append new UI to nav
-        var ol = nav.firstElementChild,
-            li = document.createElement('li');
-        li.style.float='right';
-        li.appendChild(label);
-        li.appendChild(saveBtn);
-        li.appendChild(count);
-        li.appendChild(prevBtn);
-        li.appendChild(nextBtn);
+        //create new elements & append to nav bar
+        var ol = nav.firstElementChild;
         
-        ol.appendChild(li);
+        var saveLabel = getLI('');
+        var save = getLI('Save', function() { setCookie(saveLabel) });
+        saveLabel.style.float = save.style.float = '';
+        
+        ol.appendChild(saveLabel);        
+        ol.appendChild(save);
+        
+        var count = getLI('');
+        ol.appendChild(getLI("▼ Next", next));
+        ol.appendChild(getLI("Prev ▲", prev));
+        ol.appendChild(count);
         
         // trigger workflow
-        loadComments(label, count);
+        loadComments(saveLabel, count);
+    }
+    function createNav() {
+        var nav = document.createElement('div');
+        nav.id = 'paginav';
+        nav.appendChild(document.createElement('ul'));
+        
+        var container = document.getElementById('comment-wrapper');
+        container.append(nav);
+
+        return nav;
+    }
+
+
+    function getLI(text, callback) {
+        var li = document.createElement('li');
+        li.style.float = 'right';
+
+        if (!!callback) {
+            var a = document.createElement('a');
+            a.innerText = text;
+            a.style.cursor = 'pointer';
+            a.onclick = callback;
+            li.appendChild(a);
+        } else {
+            li.innerText = text;
+        }
+        
+        return li;
     }
 
     // find all comment nodes by timestamp class and process them
@@ -96,16 +115,17 @@
     }
 
     // see if a given comment timestamp is new enough to be 'unread'
-    function evalComment(stamp, lastReadTime){    //http://momentjs.com/docs/#/parsing/string-format/
-        var stampDateTime = moment(stamp.title,"LLLL");
-        
-        return (stampDateTime._d > lastReadTime) ? formatComment(stamp) : false;
-    }
-
     function formatComment(stampNode){
         var comment = stampNode.parentElement.nextElementSibling;
         comment.style.backgroundColor = "#ffcda3";
         return comment;
+    }
+
+    function evalComment(stamp, lastReadTime){    //http://momentjs.com/docs/#/parsing/string-format/
+//         var stampDateTime = moment(stamp.title,"LLLL");
+        var stampDateTime = moment(stamp.innerText.trim());
+        
+        return (stampDateTime._d > lastReadTime) ? formatComment(stamp) : false;
     }
 
     // track location
